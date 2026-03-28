@@ -1,0 +1,36 @@
+name: einvoice-provider
+
+services:
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+    networks:
+      - einvoice-new
+    volumes:
+      - ./docker/docker_data/monogdb_data:/data/db
+    restart: unless-stopped
+  
+  postgres:
+    image: postgres:14
+    container_name: postgres_server
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=einvoice-app
+    networks:
+      - einvoice-new
+    volumes:
+      - ./docker/docker_data/postgres_data:/var/postgresql/data
+
+networks:
+  einvoice-new:
+    driver: bridge
+    name: einvoice-new
