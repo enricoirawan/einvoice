@@ -1,13 +1,13 @@
-import { BadRequestException, Inject, Injectable, InternalServerErrorException } from '@nestjs/common';
-import { UserRepository } from '../repositories/user.repository';
-import { CreateUserTcpRequest } from '@common/interfaces/tcp/user';
-import { ERROR_CODE } from '@common/constants/enum/error-code.enum';
-import { createUserRequestMapping } from '../mappers';
 import { TCP_SERVICES } from '@common/configuration/tcp.config';
-import { TcpClient } from '@common/interfaces/tcp/common/tcp-client.interface';
+import { ERROR_CODE } from '@common/constants/enum/error-code.enum';
 import { TCP_REQUEST_MESSAGE } from '@common/constants/enum/tcp-request-message.enum';
 import { CreateKeycloakUserTcpReq } from '@common/interfaces/tcp/authorizer';
+import { TcpClient } from '@common/interfaces/tcp/common/tcp-client.interface';
+import { CreateUserTcpRequest } from '@common/interfaces/tcp/user';
+import { BadRequestException, Inject, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { firstValueFrom, map } from 'rxjs';
+import { createUserRequestMapping } from '../mappers';
+import { UserRepository } from '../repositories/user.repository';
 
 @Injectable()
 export class UserService {
@@ -49,7 +49,7 @@ export class UserService {
     );
   }
 
-  getUserByUserId(userId: string) {
+  async getUserByUserId(userId: string) {
     return this.userRepository.getByUserId(userId);
   }
 }

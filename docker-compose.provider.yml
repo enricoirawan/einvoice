@@ -44,6 +44,17 @@ services:
       - ./docker/docker_data/keycloak_data:/opt/keycloak/data
     networks:
       - einvoice-new
+  
+  redis:
+    image: redis
+    container_name: redis_server
+    ports:
+      - '6379:6379'
+    networks:
+      - einvoice-new
+    restart: unless-stopped
+    volumes:
+      - ./docker/docker_data/redis_data:/data
 
 networks:
   einvoice-new:
