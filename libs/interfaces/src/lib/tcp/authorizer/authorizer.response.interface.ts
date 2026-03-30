@@ -6,7 +6,7 @@ import { JwtPayload } from 'jsonwebtoken';
 export type LoginTcpResponse = LoginResponseDto;
 
 export class AuthorizedMetadata {
-  userId: string | undefined;
+  userId: string;
   user: User | undefined;
   permissions: PERMISSION[] | undefined;
   jwt: JwtPayload | undefined;
