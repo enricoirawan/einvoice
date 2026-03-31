@@ -25,8 +25,8 @@ export class InvoiceController {
     @RequestParams() params: SendInvoiceTcpReq,
     @ProcessId() processId: string,
   ): Promise<Response<string>> {
-    const result = await this.invoiceService.sendById(params, processId);
-    return Response.success<string>(result || '');
+    await this.invoiceService.sendById(params, processId);
+    return Response.success<string>(HTTP_MESSAGE.OK);
   }
 
   @MessagePattern(TCP_REQUEST_MESSAGE.INVOICE.UPDATE_INVOICE_PAID)
