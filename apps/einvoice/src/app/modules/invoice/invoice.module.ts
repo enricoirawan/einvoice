@@ -11,6 +11,7 @@ import { PaymentModule } from '../payment/payment.module';
 import { KafkaModule } from '@common/kafka/kafka.module';
 import { QUEUE_SERVICES } from '@common/constants/enum/queue.enum';
 import { SagaOrchestrationModule } from '@common/saga-orchestration/saga-orchestration.module';
+import { InvoiceSendSagaSteps } from './sagas/invoice-send-saga-steps.service';
 
 @Module({
   imports: [
@@ -25,6 +26,6 @@ import { SagaOrchestrationModule } from '@common/saga-orchestration/saga-orchest
     SagaOrchestrationModule.forRoot(),
   ],
   controllers: [InvoiceController],
-  providers: [InvoiceService, InvoiceRepository],
+  providers: [InvoiceService, InvoiceRepository, InvoiceSendSagaSteps],
 })
 export class InvoiceModule {}
