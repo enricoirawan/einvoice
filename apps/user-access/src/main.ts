@@ -1,3 +1,7 @@
+import { initTracing } from '@common/observability/tracing/tracing';
+
+initTracing('user-access-service');
+
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app/app.module';

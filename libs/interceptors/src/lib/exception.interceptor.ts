@@ -16,9 +16,11 @@ export class ExceptionInterceptor implements NestInterceptor {
 
     return next.handle().pipe(
       map((data: ResponseDto<unknown>) => {
-        const durationMs = Date.now() - startTime;
-        data.processId = processId;
-        data.duration = `${durationMs} ms`;
+        if (data instanceof ResponseDto) {
+          const durationMs = Date.now() - startTime;
+          data.processId = processId;
+          data.duration = `${durationMs} ms`;
+        }
 
         return data;
       }),
@@ -29,6 +31,15 @@ export class ExceptionInterceptor implements NestInterceptor {
         const message = error?.response?.message || error?.message || error || HTTP_MESSAGE.INTERNAL_SERVER_ERROR;
         const code =
           error?.code || error?.statusCode || error?.response?.statusCode || HttpStatus.INTERNAL_SERVER_ERROR;
+
+        const response = error.getResponse ? error.getResponse() : error.response;
+        const data = response ? { ...response } : null;
+
+        if (data && typeof data === 'object') {
+          delete data.message;
+          delete data.statusCode;
+        }
+
         throw new HttpException(
           new ResponseDto({ data: null, message, statusCode: code, duration: `${durationMs} ms`, processId }),
           code,

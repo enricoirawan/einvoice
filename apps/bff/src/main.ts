@@ -3,29 +3,23 @@
  * This is only a minimal backend to get started.
  */
 
+import { initTracing } from '@common/observability/tracing/tracing';
+
+initTracing('bff-service');
+
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app/app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import * as express from 'express';
+import { Logger as PinoLogger } from '@common/observability/logger';
 
 async function bootstrap() {
   try {
-    const app = await NestFactory.create(AppModule);
-
-    const expressApp = app.getHttpAdapter().getInstance();
-
-    // Kita gunakan expressApp.use langsung agar pasti jalan pertama kali
-    expressApp.use(
-      express.json({
-        verify: (req: any, res: express.Response, buf: Buffer) => {
-          // Simpan raw body
-          req.rawBody = buf;
-          // Opsional: Log untuk debugging saat request masuk
-          // console.log('Middleware caught raw body, length:', buf.length);
-        },
-      }),
-    );
+    const app = await NestFactory.create(AppModule, {
+      rawBody: true,
+      bufferLogs: true,
+    });
+    app.useLogger(app.get(PinoLogger));
 
     const globalPrefix = AppModule.CONFIGURATION.GLOBAL_PREFIX;
     app.setGlobalPrefix(globalPrefix);

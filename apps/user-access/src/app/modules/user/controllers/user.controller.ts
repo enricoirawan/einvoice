@@ -2,6 +2,7 @@ import { HTTP_MESSAGE } from '@common/constants/enum/http-message.enum';
 import { TCP_REQUEST_MESSAGE } from '@common/constants/enum/tcp-request-message.enum';
 import { RequestParams } from '@common/decorators/request-param.decorator';
 import { TcpLoggingInterceptor } from '@common/interceptors/tcpLogging.interceptor';
+import { TcpServerTracingInterceptor } from '@common/interceptors/tracing-server.interceptor';
 import { Response } from '@common/interfaces/tcp/common/response.interface';
 import { CreateUserTcpRequest } from '@common/interfaces/tcp/user';
 import { Controller, UseInterceptors } from '@nestjs/common';
@@ -11,7 +12,7 @@ import { ProcessId } from '@common/decorators/proccessId.decorator';
 import { User } from '@common/schemas/user.schema';
 
 @Controller()
-@UseInterceptors(TcpLoggingInterceptor)
+@UseInterceptors(TcpLoggingInterceptor, TcpServerTracingInterceptor)
 export class UserController {
   constructor(private readonly userService: UserService) {}
 

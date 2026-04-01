@@ -1,6 +1,7 @@
 import { TCP_REQUEST_MESSAGE } from '@common/constants/enum/tcp-request-message.enum';
 import { RequestParams } from '@common/decorators/request-param.decorator';
 import { TcpLoggingInterceptor } from '@common/interceptors/tcpLogging.interceptor';
+import { TcpServerTracingInterceptor } from '@common/interceptors/tracing-server.interceptor';
 import { AuthorizeResponse, LoginTcpRequest, LoginTcpResponse } from '@common/interfaces/tcp/authorizer';
 import { Response } from '@common/interfaces/tcp/common/response.interface';
 import { Controller, UseInterceptors } from '@nestjs/common';
@@ -9,7 +10,7 @@ import { AuthorizerService } from '../services/authorizer.service';
 import { ProcessId } from '@common/decorators/proccessId.decorator';
 
 @Controller()
-@UseInterceptors(TcpLoggingInterceptor)
+@UseInterceptors(TcpLoggingInterceptor, TcpServerTracingInterceptor)
 export class AuthorizerController {
   constructor(private readonly authorizerService: AuthorizerService) {}
 

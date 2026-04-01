@@ -1,5 +1,6 @@
 import { Controller, UseInterceptors } from '@nestjs/common';
 import { TcpLoggingInterceptor } from '@common/interceptors/tcpLogging.interceptor';
+import { TcpServerTracingInterceptor } from '@common/interceptors/tracing-server.interceptor';
 import { KeycloakHttpService } from '../services/keycloak-http.service';
 import { MessagePattern } from '@nestjs/microservices';
 import { TCP_REQUEST_MESSAGE } from '@common/constants/enum/tcp-request-message.enum';
@@ -8,7 +9,7 @@ import { CreateKeycloakUserTcpReq } from '@common/interfaces/tcp/authorizer';
 import { Response } from '@common/interfaces/tcp/common/response.interface';
 
 @Controller()
-@UseInterceptors(TcpLoggingInterceptor)
+@UseInterceptors(TcpLoggingInterceptor, TcpServerTracingInterceptor)
 export class KeycloakController {
   constructor(private readonly keycloakHttpService: KeycloakHttpService) {}
 

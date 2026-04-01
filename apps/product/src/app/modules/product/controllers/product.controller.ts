@@ -1,5 +1,6 @@
 import { Controller, UseInterceptors } from '@nestjs/common';
 import { TcpLoggingInterceptor } from '@common/interceptors/tcpLogging.interceptor';
+import { TcpServerTracingInterceptor } from '@common/interceptors/tracing-server.interceptor';
 import { ProductService } from '../services/product.service';
 import { MessagePattern } from '@nestjs/microservices';
 import { TCP_REQUEST_MESSAGE } from '@common/constants/enum/tcp-request-message.enum';
@@ -8,7 +9,7 @@ import { Response } from '@common/interfaces/tcp/common/response.interface';
 import { RequestParams } from '@common/decorators/request-param.decorator';
 
 @Controller()
-@UseInterceptors(TcpLoggingInterceptor)
+@UseInterceptors(TcpLoggingInterceptor, TcpServerTracingInterceptor)
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 

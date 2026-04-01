@@ -17,6 +17,9 @@ import { ThrottlerProvider } from '@common/configuration/throttler.config';
 import { GRPC_SERVICES, GrpcProvider } from '@common/configuration/grpc.config';
 import { ThrottlerGuard } from '@nestjs/throttler';
 import { WebhookModule } from './modules/webhook/webhook.module';
+import { HealthModule } from './modules/health/health.module';
+import { LoggerModule } from '@common/observability/logger';
+import { MetricsModule } from '@common/observability/metrics';
 
 @Module({
   imports: [
@@ -25,11 +28,13 @@ import { WebhookModule } from './modules/webhook/webhook.module';
     ProductModule,
     UserModule,
     AuthorizerModule,
-    ClientsModule.registerAsync([TcpProvider(TCP_SERVICES.AUTHORIZER_SERVICE)]),
     RedisProvider,
     ThrottlerProvider,
     ClientsModule.registerAsync([GrpcProvider(GRPC_SERVICES.AUTHORIZER_SERVICE)]),
     WebhookModule,
+    HealthModule,
+    LoggerModule.forRoot('bff'),
+    MetricsModule,
   ],
   controllers: [],
   providers: [
@@ -46,6 +51,7 @@ import { WebhookModule } from './modules/webhook/webhook.module';
       provide: APP_GUARD,
       useClass: ThrottlerGuard,
     },
+    TcpProvider(TCP_SERVICES.AUTHORIZER_SERVICE),
   ],
 })
 export class AppModule {
