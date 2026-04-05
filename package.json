@@ -6,7 +6,9 @@
     "prepare": "husky",
     "nx:reset": "nx reset",
     "nx:run-many": "nx run-many",
-    "dev": "pnpm nx:reset && pnpm nx:run-many -t serve"
+    "docker:start:provider": "docker compose -f docker-compose.provider.yaml up -d",
+    "dev": "pnpm nx:reset && pnpm nx:run-many -t serve",
+    "docker:start:local": " ./tools/deploy/run-local.sh"
   },
   "private": true,
   "dependencies": {
